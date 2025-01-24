@@ -1,5 +1,7 @@
 <?php
 
+use App\Enum\RoleEnum;
+use App\Http\Controllers\Api\AdminApiController;
 use App\Http\Controllers\Api\AuthApiController;
 use App\Http\Controllers\Api\UserApiController;
 use Illuminate\Http\Request;
@@ -11,6 +13,12 @@ Route::controller(AuthApiController::class)->group(function(){
 });
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::post('tickets', [UserApiController::class, 'createTicket']);
-    Route::get('tickets/{ticket?}', [UserApiController::class, 'getTicket']);
+    Route::controller(UserApiController::class)->group(function(){
+        Route::post('tickets', 'createTicket');
+        Route::get('tickets/{ticket?}', 'getTicket');
+    });
+    Route::prefix('admin')->controller(AdminApiController::class)->middleware(['role:admin'])->group(function(){
+        Route::post('agents', 'createAgent');
+        Route::get('tickets', 'getTickets');
+    });
 });
