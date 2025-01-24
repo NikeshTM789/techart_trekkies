@@ -19,4 +19,8 @@ class Ticket extends Model
             $ticket->user_id = Auth::id();
         });
     }
+
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
 }

@@ -12,4 +12,5 @@ Route::controller(AuthApiController::class)->group(function(){
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('tickets', [UserApiController::class, 'createTicket']);
+    Route::get('tickets/{ticket?}', [UserApiController::class, 'getTicket']);
 });
