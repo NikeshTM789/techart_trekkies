@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Http\Requests\Traits\JsonErrorResponseTrait;
+use App\Rules\EmailExistsRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UserLoginRequest extends FormRequest
@@ -25,7 +26,7 @@ class UserLoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => 'required|email|exists:users,email',
+            'email' => ['required','email', new EmailExistsRule],
             'password' => 'required'
         ];
     }
