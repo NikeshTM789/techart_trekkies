@@ -16,20 +16,4 @@ class UserApiController extends Controller
         Ticket::create($request->validated());
         return Response::successJson('Ticket Added');
     }
-
-    public function getTicket(Ticket $ticket = null){
-        if ($ticket) {
-            if ($ticket->user->isNot(Auth::user())) {
-                return Response::errorJson('Not Found');
-            }
-            $ticket = new TicketResource($ticket);
-            return Response::successJson('User Ticket', $ticket);
-        }
-        $tickets = Ticket::whereBelongsTo(Auth::user())->paginate();
-        
-        $pagination_data = $tickets->toArray();
-		['links' => $links] = $pagination_data;
-        $tickets = TicketResource::collection($tickets);
-        return Response::successJson('User Ticket List', compact('tickets','links'));
-    }
 }

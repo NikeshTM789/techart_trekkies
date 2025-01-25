@@ -18,14 +18,15 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::controller(TicketApiController::class)->group(function(){
         Route::patch('tickets/update_status/{ticket}', 'updateTicketStatus')->middleware(['role:admin|agent']);
         Route::post('tickets/{ticket}/reply', 'addTicketReply')->middleware(['role:agent']);
+        Route::get('tickets/{ticket?}', 'getTickets')->middleware(['role:user']);
+        Route::get('admin/tickets', 'getTickets')->middleware(['role:admin']);
+
     });
 
     Route::controller(UserApiController::class)->group(function(){
         Route::post('tickets', 'createTicket');
-        Route::get('tickets/{ticket?}', 'getTicket');
     });
     Route::prefix('admin')->controller(AdminApiController::class)->middleware(['role:admin'])->group(function(){
         Route::post('agents', 'createAgent');
-        Route::get('tickets', 'getTickets');
     });
 });

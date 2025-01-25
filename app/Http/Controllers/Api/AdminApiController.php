@@ -21,13 +21,4 @@ class AdminApiController extends Controller
         });
         return Response::successJson('Agent Added');
     }
-
-    public function getTickets(){
-        $tickets = Ticket::paginate();
-        
-        $pagination_data = $tickets->toArray();
-		['links' => $links] = $pagination_data;
-        $tickets = TicketResource::collection($tickets);
-        return Response::successJson('User Ticket List', compact('tickets','links'));
-    }
 }
