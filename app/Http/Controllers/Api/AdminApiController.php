@@ -21,4 +21,9 @@ class AdminApiController extends Controller
         });
         return Response::successJson('Agent Added');
     }
+
+    public function getRoles(){
+        $roles = DB::table('roles')->pluck('id','name');
+        return Response::successJson('All Roles', $roles);
+    }
 }
