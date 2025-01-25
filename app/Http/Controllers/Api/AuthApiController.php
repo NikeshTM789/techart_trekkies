@@ -25,10 +25,17 @@ class AuthApiController extends Controller
     }
 
     public function login(UserLoginRequest $request){
+        $flag = false;
         if (Auth::attempt($request->validated())) {
             $user = Auth::user();
+            $flag = true;
+        }elseif (Auth::guard('agent')->attempt($request->validated())) {
+            $user = Auth::guard('agent')->user();
+            $flag = true;
+        }
+        if ($flag) {
             $token = $user->getAuthToken();
-            return Response::successJson('User Logged In', compact('token'));
+            return Response::successJson('Logged In', compact('token'));
         }
         return Response::errorJson('Credentials Does Not Match');
     }
