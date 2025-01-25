@@ -9,7 +9,8 @@ class Ticket extends Model
 {
     protected $fillable = [
         'title',
-        'description'
+        'description',
+        'status'
     ];
 
     public static function boot()
