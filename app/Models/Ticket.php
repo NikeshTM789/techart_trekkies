@@ -10,7 +10,8 @@ class Ticket extends Model
     protected $fillable = [
         'title',
         'description',
-        'status'
+        'status',
+        'agent_id'
     ];
 
     public static function boot()

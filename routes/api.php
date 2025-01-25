@@ -29,5 +29,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('admin')->controller(AdminApiController::class)->middleware(['role:admin'])->group(function(){
         Route::post('agents', 'createAgent');
         Route::get('roles', 'getRoles');
+        Route::patch('assign-agent-to-ticket/{ticket}', 'assignTicket');
     });
 });
