@@ -1,5 +1,6 @@
 <?php
 
+use App\Enum\TicketStatusEnum;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -17,7 +18,7 @@ return new class extends Migration
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->string('title');
             $table->text('description');
-            $table->char('status',1)->default(0);#default is pending
+            $table->char('status',1)->default(TicketStatusEnum::PENDING->value);#default is pending
             $table->timestamps();
         });
     }

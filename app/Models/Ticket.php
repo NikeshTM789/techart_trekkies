@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enum\TicketPriorityEnum;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 
@@ -13,6 +14,13 @@ class Ticket extends Model
         'status',
         'agent_id'
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'priority' => TicketPriorityEnum::class
+        ];
+    }
 
     public static function boot()
     {

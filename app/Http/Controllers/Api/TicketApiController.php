@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\DB;
 
 class TicketApiController extends Controller
 {
-    public function getTickets(Ticket $ticket = null)
+    public function getTickets(Request $request, Ticket $ticket = null)
     {
         $user = Auth::user() ?? Auth::guard('agent')->user();
         $isAdmin = $user->hasRole(RoleEnum::ADMIN->value);
@@ -41,13 +41,14 @@ class TicketApiController extends Controller
             return Response::errorJson($message, $ticket);
 
         }else{
+            $tickets = Ticket::query();
             if ($isAdmin) {
-                $tickets = Ticket::paginate();
                 $message = 'All Ticket List';
             } elseif($isAgent || $isUser) {
                 $message = $isAgent ? 'Agent Ticket List' : 'User Ticket List';
-                $tickets = Ticket::whereBelongsTo($user)->paginate();
+                $tickets = $tickets->whereBelongsTo($user);
             }
+            $tickets = $tickets->when($request->query('priority'), fn($qry, $sortBy) => $qry->orderBy('priority',$sortBy))->paginate();
             $pagination_data = $tickets->toArray();
             ['links' => $links] = $pagination_data;
             $tickets = TicketResource::collection($tickets);
