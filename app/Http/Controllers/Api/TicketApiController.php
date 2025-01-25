@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Enum\RoleEnum;
+use App\Enum\TicketPriorityEnum;
 use App\Enum\TicketStatusEnum;
 use App\Http\Controllers\Controller;
 use App\Models\Ticket;
@@ -48,7 +49,10 @@ class TicketApiController extends Controller
                 $message = $isAgent ? 'Agent Ticket List' : 'User Ticket List';
                 $tickets = $tickets->whereBelongsTo($user);
             }
-            $tickets = $tickets->when($request->query('priority'), fn($qry, $sortBy) => $qry->orderBy('priority',$sortBy))->paginate();
+            
+            $priority_value = TicketPriorityEnum::getKeyByName($request->query('priority'));
+            $tickets = $tickets->when(is_int($priority_value), fn($qry) => $qry->where('priority',$priority_value))->paginate();
+
             $pagination_data = $tickets->toArray();
             ['links' => $links] = $pagination_data;
             $tickets = TicketResource::collection($tickets);

@@ -12,4 +12,14 @@ enum TicketPriorityEnum:int
 	{
 		return array_map(fn($item) => $item->value, self::cases());
 	}
+
+    public static function getKeyByName(string $name): ?int
+    {
+        foreach (self::cases() as $case) {
+            if ($case->name === strtoupper($name)) {
+                return $case->value;
+            }
+        }
+        return null;
+    }
 }
