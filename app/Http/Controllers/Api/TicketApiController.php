@@ -19,23 +19,39 @@ class TicketApiController extends Controller
 {
     public function getTickets(Ticket $ticket = null)
     {
+        $user = Auth::user() ?? Auth::guard('agent')->user();
+        $isAdmin = $user->hasRole(RoleEnum::ADMIN->value);
+        $isAgent = $user->hasRole(RoleEnum::AGENT->value);
+        $isUser = $user->hasRole(RoleEnum::USER->value);
         if ($ticket) {
-            if ($ticket->user->isNot(Auth::user())) {
-                return Response::errorJson('Not Found');
-            }
             $ticket = new TicketResource($ticket);
-            return Response::successJson('User Ticket', $ticket);
+            if ($isAdmin) {
+                $message = 'Admin Ticket';
+            }elseif ($isAgent) {
+                if (empty($ticket->agent) || $ticket->agent->isNot($user)) {
+                    return Response::errorJson('Not Found');
+                }
+                $message = 'Agent Ticket';
+            }elseif ($isUser) {
+                if ($ticket->user->isNot($user)) {
+                    return Response::errorJson('Not Found');
+                }
+                $message = 'User Ticket';
+            }
+            return Response::errorJson($message, $ticket);
+
         }else{
-            $user = Auth::user();
-            if ($user->hasRole(RoleEnum::ADMIN->value)) {
+            if ($isAdmin) {
                 $tickets = Ticket::paginate();
-            } else {
-                $tickets = Ticket::whereBelongsTo(Auth::user())->paginate();
+                $message = 'All Ticket List';
+            } elseif($isAgent || $isUser) {
+                $message = $isAgent ? 'Agent Ticket List' : 'User Ticket List';
+                $tickets = Ticket::whereBelongsTo($user)->paginate();
             }
             $pagination_data = $tickets->toArray();
             ['links' => $links] = $pagination_data;
             $tickets = TicketResource::collection($tickets);
-            return Response::successJson('User Ticket List', compact('tickets', 'links'));
+            return Response::successJson($message, compact('tickets', 'links'));
         }
     }
     public function updateTicketStatus(Request $request, Ticket $ticket)

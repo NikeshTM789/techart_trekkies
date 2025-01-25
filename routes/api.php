@@ -18,8 +18,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::controller(TicketApiController::class)->group(function(){
         Route::patch('tickets/update_status/{ticket}', 'updateTicketStatus')->middleware(['role:admin|agent']);
         Route::post('tickets/{ticket}/reply', 'addTicketReply')->middleware(['role:agent']);
-        Route::get('tickets/{ticket?}', 'getTickets')->middleware(['role:user']);
-        Route::get('admin/tickets', 'getTickets')->middleware(['role:admin']);
+        Route::get('tickets/{ticket?}', 'getTickets')->middleware(['role:user|agent']);# route to get ticket list for agent/user
+        Route::get('admin/tickets', 'getTickets')->middleware(['role:admin']);# route to get ticket list for admin 
     });
 
     Route::middleware(['role:user'])->controller(UserApiController::class)->group(function(){
@@ -29,6 +29,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('admin')->controller(AdminApiController::class)->middleware(['role:admin'])->group(function(){
         Route::post('agents', 'createAgent');
         Route::get('roles', 'getRoles');
-        Route::patch('assign-agent-to-ticket/{ticket}', 'assignTicket');
+        Route::patch('assign-agent-to-ticket/{ticket}', 'assignTicket');# assign ticket to an agent route
     });
 });
