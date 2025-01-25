@@ -7,10 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Agent extends Authenticatable
 {
-    use HasApiTokens, HasRoles, SanctumTrait;
+    use HasFactory, HasApiTokens, HasRoles, SanctumTrait;
 
     protected $guard_name = 'web';
     
