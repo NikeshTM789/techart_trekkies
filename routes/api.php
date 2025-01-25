@@ -2,6 +2,7 @@
 
 use App\Enum\RoleEnum;
 use App\Http\Controllers\Api\AdminApiController;
+use App\Http\Controllers\Api\AgentApiController;
 use App\Http\Controllers\Api\AuthApiController;
 use App\Http\Controllers\Api\TicketApiController;
 use App\Http\Controllers\Api\UserApiController;
@@ -26,5 +27,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('agents', 'createAgent');
         Route::get('tickets', 'getTickets');
     });
-
+    Route::controller(AgentApiController::class)->middleware(['role:agent'])->group(function(){
+        Route::post('tickets/{ticket}/reply', 'addTicketReply');
+    });
 });
