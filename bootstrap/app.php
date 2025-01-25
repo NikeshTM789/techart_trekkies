@@ -26,6 +26,9 @@ return Application::configure(basePath: dirname(__DIR__))
         $exceptions->renderable(function(Symfony\Component\HttpKernel\Exception\NotFoundHttpException $e){
             return Response::errorJson($e->getMessage(),null,404);
         });
+        $exceptions->renderable(function(Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException $e){
+            return Response::errorJson($e->getMessage(),null,403);
+        });
         $exceptions->renderable(function(Illuminate\Auth\AuthenticationException $e){
             return Response::errorJson($e->getMessage(),null,401);
         });

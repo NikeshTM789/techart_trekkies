@@ -30,5 +30,6 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('agents', 'createAgent');
         Route::get('roles', 'getRoles');
         Route::patch('assign-agent-to-ticket/{ticket}', 'assignTicket');# assign ticket to an agent route
+        Route::patch('update-ticket-priority/{ticket}', 'updateTicketPriority');
     });
 });

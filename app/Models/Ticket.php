@@ -12,7 +12,8 @@ class Ticket extends Model
         'title',
         'description',
         'status',
-        'agent_id'
+        'agent_id',
+        'priority'
     ];
 
     protected function casts(): array
