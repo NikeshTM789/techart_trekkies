@@ -38,7 +38,11 @@ class Ticket extends Model
     public function agent(){
         return $this->belongsTo(Agent::class);
     }
-
+    /**
+     * ticket can have many replies
+     * in case of ticket status can again be 'IN PROGRESS'
+     * if previously not 'RESOLVED' properly
+     */
     public function replies(){
         return $this->HasMany(Reply::class);
     }

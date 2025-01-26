@@ -18,7 +18,7 @@ class TicketResource extends JsonResource
     {
         return [
             "id" => $this->id,
-            'user_id' => $this->when(Auth::user()->hasRole(RoleEnum::ADMIN->value), $this->user_id),
+            'user_id' => $this->when(Auth::user()->hasRole([RoleEnum::ADMIN->value, RoleEnum::AGENT->value]), $this->user_id),
             "title" => $this->title,
             "description" => $this->description,
             "status" => $this->status,

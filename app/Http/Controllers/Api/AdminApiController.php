@@ -16,6 +16,10 @@ use Illuminate\Support\Facades\Response;
 
 class AdminApiController extends Controller
 {
+    /**
+     * Here an agent is automatically assigned
+     * its role if created
+     */
     public function createAgent(AgentCreateRequest $request){
         DB::transaction(function () use($request){
             $agent = Agent::create($request->validated());

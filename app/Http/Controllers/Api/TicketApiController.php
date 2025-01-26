@@ -39,7 +39,7 @@ class TicketApiController extends Controller
                 }
                 $message = 'User Ticket';
             }
-            return Response::errorJson($message, $ticket);
+            return Response::successJson($message, $ticket);
 
         }else{
             $tickets = Ticket::query();
@@ -49,7 +49,10 @@ class TicketApiController extends Controller
                 $message = $isAgent ? 'Agent Ticket List' : 'User Ticket List';
                 $tickets = $tickets->whereBelongsTo($user);
             }
-            
+            /**
+             * I gave every role can sort their ticket list 
+             * based on its priority[0 => 'low', 1 => 'medium' ,2 => 'high']
+             */
             $priority_value = TicketPriorityEnum::getKeyByName($request->query('priority'));
             $tickets = $tickets->when(is_int($priority_value), fn($qry) => $qry->where('priority',$priority_value))->paginate();
 
