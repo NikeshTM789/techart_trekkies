@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Enum\RoleEnum;
 use App\Models\Agent;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -18,8 +19,8 @@ class DatabaseSeeder extends Seeder
             RoleSeeder::class,
             UserSeeder::class
         ]);
-        User::factory(10)->create();
-        Agent::factory(10)->create();
+        User::factory(10)->create()->each(fn($user) => $user->assignRole(RoleEnum::USER->value));
+        Agent::factory(10)->create()->each(fn($user) => $user->assignRole(RoleEnum::AGENT->value));
 
         /* User::factory()->create([
             'name' => 'Test User',
