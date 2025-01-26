@@ -16,7 +16,7 @@ class AuthApiController extends Controller
 {
     public function register(UserRegisterRequest $request){
         $token = null;
-        DB::transaction(function () use($request){
+        DB::transaction(function () use($request, &$token){
             $user = User::create($request->validated());
             $user->assignRole(RoleEnum::USER->value);
             $token = $user->getAuthToken();
