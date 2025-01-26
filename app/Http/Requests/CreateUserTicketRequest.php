@@ -26,7 +26,7 @@ class CreateUserTicketRequest extends FormRequest
     {
         return [
             'title' => 'required',
-            'description' => 'required'
+            'description' => 'required:max:500'
         ];
     }
 }
